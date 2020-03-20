@@ -2,56 +2,63 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const MainPage = () => {
-  const [input, setInput] = useState(undefined);
-  const [weather, setWeather] = useState({});
+  const [input, setInput] = useState({
+    title: "",
+    body: "",
+    author: ""
+  });
 
-  const addPost = async event => {
-    event.preventDefault();
+  const addJournal = async () => {
+    const { title, body, author } = input;
+    console.log("input", input);
+    console.log("got here");
+
     const res = await axios.post(
-      "http://localhost:8000/todos",
-      { title: input },
+      "http://localhost:8000/journals",
+      {
+        title,
+        body,
+        author
+      },
       {
         headers: {
-          // "Authorization": "Bearer falafel",
           "Content-Type": "application/json"
         }
       }
     );
-    console.log(res.data);
   };
 
-  const getWeather = async data => {
-    const res = await axios.get(
-      `https://weather-service-api.getimpala.com/api/v1/weather?latitude=${data.latitude}&longitude=${data.longitude}`,
-      {
-        headers: {
-          "Authorization": "Bearer falafel",
-          "Content-Type": "application/json"
-        }
-      }
-    );
-    setWeather(res.data);
+  const handleChangeField = (key, event) => {
+    setInput({
+      ...input,
+      [key]: event.target.value
+    });
   };
 
-  const umbrellaRequired =
-    weather.chanceOfRain >= 0.5 && weather.accuracyOfReport >= 0.75 ? true : false;
-
-  const handleInput = event => {
-    event.preventDefault();
-    setInput(event.target.value);
-  };
+  const { title, body, author } = input;
 
   return (
     <>
       <h1>One Day in Life</h1>
       <div>
-        <form onSubmit={addPost}>
-          <input type="text" onChange={handleInput} placeholder="write something..." />
-          <button type="submit">Save</button>
-        </form>
-      </div>
-      <div>
-          <h4>{umbrellaRequired ? "Take the Umbrella!" : "Leave the Umbrella home!"}</h4>
+        <input
+          onChange={e => handleChangeField("title", e)}
+          value={title}
+          placeholder="title..."
+        />
+        <textarea
+          onChange={e => handleChangeField("body", e)}
+          placeholder="content..."
+          value={body}
+        ></textarea>
+        <input
+          onChange={e => handleChangeField("author", e)}
+          value={author}
+          placeholder="Your name..."
+        />
+        <button onClick={addJournal}>
+          Submit
+        </button>
       </div>
     </>
   );
