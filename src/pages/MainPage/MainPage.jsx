@@ -1,57 +1,83 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const MainPage = () => {
-  const [input, setInput] = useState(undefined);
-  const [weather, setWeather] = useState({});
+  const [input, setInput] = useState({
+    title: "",
+    content: "",
+    author: ""
+  });
 
-  const addPost = async event => {
-    event.preventDefault();
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        "http://localhost:8000/days",
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      setDays((res.data));
+    }
+    fetchData();
+  }, []);
+
+  const addDay = async () => {
+    const { title, content, author } = input;
+
     const res = await axios.post(
-      "http://localhost:8000/todos",
-      { title: input },
+      "http://localhost:8000/days",
+      {
+        title,
+        content,
+        author
+      },
       {
         headers: {
-          // "Authorization": "Bearer falafel",
           "Content-Type": "application/json"
         }
       }
     );
-    console.log(res.data);
+    setDays(days.concat(res.data));
   };
 
-  const getWeather = async data => {
-    const res = await axios.get(
-      `https://weather-service-api.getimpala.com/api/v1/weather?latitude=${data.latitude}&longitude=${data.longitude}`,
-      {
-        headers: {
-          "Authorization": "Bearer falafel",
-          "Content-Type": "application/json"
-        }
-      }
-    );
-    setWeather(res.data);
+  const handleChangeField = (key, event) => {
+    setInput({
+      ...input,
+      [key]: event.target.value
+    });
   };
 
-  const umbrellaRequired =
-    weather.chanceOfRain >= 0.5 && weather.accuracyOfReport >= 0.75 ? true : false;
-
-  const handleInput = event => {
-    event.preventDefault();
-    setInput(event.target.value);
-  };
+  const { title, content, author } = input;
 
   return (
     <>
       <h1>One Day in Life</h1>
       <div>
-        <form onSubmit={addPost}>
-          <input type="text" onChange={handleInput} placeholder="write something..." />
-          <button type="submit">Save</button>
-        </form>
+        <input
+          onChange={e => handleChangeField("title", e)}
+          value={title}
+          placeholder="title..."
+        />
+        <textarea
+          onChange={e => handleChangeField("content", e)}
+          placeholder="content..."
+          value={content}
+        ></textarea>
+        <input
+          onChange={e => handleChangeField("author", e)}
+          value={author}
+          placeholder="Your name..."
+        />
+        <button onClick={addDay}>Submit</button>
       </div>
       <div>
-          <h4>{umbrellaRequired ? "Take the Umbrella!" : "Leave the Umbrella home!"}</h4>
+        {days.map(day => (
+          <h4 key={day._id}>{day.title}</h4>
+        ))}
       </div>
     </>
   );
