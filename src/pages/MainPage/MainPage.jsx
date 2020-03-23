@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const MainPage = () => {
-  const [input, setInput] = useState({
+  const initalState = {
     title: "",
     content: "",
     author: ""
-  });
+  };
 
+  const [day, setDay] = useState(initalState);
   const [days, setDays] = useState([]);
+  const [isEdit, setIsEdit] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,22 +25,42 @@ const MainPage = () => {
   }, []);
 
   const addDay = async () => {
-    const { title, content, author } = input;
-
-    const res = await axios.post(
-      "http://localhost:8000/days",
-      {
-        title,
-        content,
-        author
-      },
-      {
-        headers: {
-          "Content-Type": "application/json"
+    const { title, content, author } = day;
+    if (!isEdit) {
+      const res = await axios.post(
+        "http://localhost:8000/days",
+        {
+          title,
+          content,
+          author
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      }
-    );
-    setDays(days.concat(res.data));
+      );
+      setDays(days.concat(res.data));
+    } else {
+      const updatedRes = await axios.patch(
+        `http://localhost:8000/days/${day._id}`,
+        {
+          title,
+          content,
+          author
+        },
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      // Find old instance and replace with updated
+      const updatedDays = days.map(d => (d._id === updatedRes.data._id) ? updatedRes.data : d)
+      setDays(updatedDays);
+      setIsEdit(false);
+      setDay(initalState);
+    }
   };
 
   const deleteDay = async id => {
@@ -46,14 +68,19 @@ const MainPage = () => {
     setDays(days.filter(day => day._id !== id));
   };
 
+  const editDay = async day => {
+    setIsEdit(true);
+    setDay(day);
+  };
+
   const handleChangeField = (key, event) => {
-    setInput({
-      ...input,
+    setDay({
+      ...day,
       [key]: event.target.value
     });
   };
 
-  const { title, content, author } = input;
+  const { title, content, author } = day;
 
   return (
     <>
@@ -74,13 +101,14 @@ const MainPage = () => {
           value={author}
           placeholder="Your name..."
         />
-        <button onClick={addDay}>Submit</button>
+        <button onClick={addDay}>{isEdit ? "Save" : "Submit"}</button>
       </div>
       <div>
         {days.map(day => (
           <div key={day._id}>
             <h4>{day.title}</h4>
             <button onClick={() => deleteDay(day._id)}>Delete</button>
+            <button onClick={() => editDay(day)}>Update</button>
           </div>
         ))}
       </div>
