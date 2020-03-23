@@ -1,23 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const MainPage = () => {
   const [input, setInput] = useState({
     title: "",
-    body: "",
+    content: "",
     author: ""
   });
 
-  const addJournal = async () => {
-    const { title, body, author } = input;
-    console.log("input", input);
-    console.log("got here");
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        "http://localhost:8000/days",
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      setDays((res.data));
+    }
+    fetchData();
+  }, []);
+
+  const addDay = async () => {
+    const { title, content, author } = input;
 
     const res = await axios.post(
-      "http://localhost:8000/journals",
+      "http://localhost:8000/days",
       {
         title,
-        body,
+        content,
         author
       },
       {
@@ -26,6 +41,7 @@ const MainPage = () => {
         }
       }
     );
+    setDays(days.concat(res.data));
   };
 
   const handleChangeField = (key, event) => {
@@ -35,7 +51,7 @@ const MainPage = () => {
     });
   };
 
-  const { title, body, author } = input;
+  const { title, content, author } = input;
 
   return (
     <>
@@ -47,18 +63,21 @@ const MainPage = () => {
           placeholder="title..."
         />
         <textarea
-          onChange={e => handleChangeField("body", e)}
+          onChange={e => handleChangeField("content", e)}
           placeholder="content..."
-          value={body}
+          value={content}
         ></textarea>
         <input
           onChange={e => handleChangeField("author", e)}
           value={author}
           placeholder="Your name..."
         />
-        <button onClick={addJournal}>
-          Submit
-        </button>
+        <button onClick={addDay}>Submit</button>
+      </div>
+      <div>
+        {days.map(day => (
+          <h4 key={day._id}>{day.title}</h4>
+        ))}
       </div>
     </>
   );
