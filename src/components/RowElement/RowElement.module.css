@@ -1,0 +1,10 @@
+.RowElement {
+  display: flex;
+  margin: 10px;
+}
+
+.RowElementLeft {
+  display: flex;
+  margin: 10px;
+  margin-left: auto;
+}

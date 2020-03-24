@@ -1,0 +1,50 @@
+/* 12 is the max number of columns on a row */
+.Col-1 {
+  flex-basis: calc((100 / (12 / 1)) * 1%);
+}
+
+.Col-2 {
+  flex-basis: calc((100 / (12 / 2)) * 1%);
+}
+
+.Col-3 {
+  flex-basis: calc((100 / (12 / 3)) * 1%);
+}
+
+.Col-4 {
+  flex-basis: calc((100 / (12 / 4)) * 1%);
+  border: 5px solid yellow;
+}
+
+.Col-5 {
+  flex-basis: calc((100 / (12 / 5)) * 1%);
+}
+
+.Col-6 {
+  flex-basis: calc((100 / (12 / 6)) * 1%);
+  border: 5px solid green;
+}
+
+.Col-7 {
+  flex-basis: calc((100 / (12 / 7)) * 1%);
+}
+
+.Col-8 {
+  flex-basis: calc((100 / (12 / 8)) * 1%);
+}
+
+.Col-9 {
+  flex-basis: calc((100 / (12 / 9)) * 1%);
+}
+
+.Col-10 {
+  flex-basis: calc((100 / (12 / 10)) * 1%);
+}
+
+.Col-11 {
+  flex-basis: calc((100 / (12 / 11)) * 1%);
+}
+
+.Col-12 {
+    flex-basis: calc((100 / (12 / 12)) * 1%);
+}

@@ -1,0 +1,11 @@
+.Container {
+    /* iPad standard breakpoint */
+    max-width: 768px;
+    margin: 0 auto;
+    border: 5px solid red;
+}
+
+.ContainerFluid {
+    margin: 0;
+    max-width: 100%;
+}

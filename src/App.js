@@ -1,12 +1,14 @@
-import React from 'react';
-import './App.css';
-import MainPage from './pages/MainPage/MainPage';
+import React from "react";
+import "./App.css";
+import Container from "./components/Container/Container";
+import MainPage from "./pages/MainPage/MainPage";
 
 function App() {
   return (
-    <div className="App">
+    <Container>
+      <h1 className="Title">One Day in Life</h1>
       <MainPage />
-    </div>
+    </Container>
   );
 }
 
