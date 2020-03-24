@@ -4,3 +4,12 @@
   width: 100%;
   justify-content: center;
 }
+
+/* TODO refactor */
+.RowFDCol {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+}
