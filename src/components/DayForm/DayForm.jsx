@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import Row from "../../components/Row/Row";
 
 const DayForm = ({ isEdit, setDays, setIsEdit, days, day, setDay }) => {
   const addDay = async () => {
@@ -58,7 +57,7 @@ const DayForm = ({ isEdit, setDays, setIsEdit, days, day, setDay }) => {
   const { title, content, author } = day;
 
   return (
-    <Row isFDCol={true}>
+    <>
       <input
         onChange={e => handleChangeField("title", e)}
         value={title}
@@ -75,7 +74,7 @@ const DayForm = ({ isEdit, setDays, setIsEdit, days, day, setDay }) => {
         placeholder="Your name..."
       />
       <button onClick={addDay}>{isEdit ? "Save" : "Submit"}</button>
-    </Row>
+    </>
   );
 };
 
