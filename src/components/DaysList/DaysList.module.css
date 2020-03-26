@@ -1,0 +1,10 @@
+.DaysListContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem;
+}
+
+p {
+  overflow: hidden;
+  /* max-width: 15ch; */
+}

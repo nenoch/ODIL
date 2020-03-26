@@ -1,0 +1,23 @@
+.FormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+  min-height: 18rem;
+}
+
+.Field {
+  background-color: aliceblue;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+.Field:focus,
+.Field:hover {
+  background-color: white;
+  border: solid 1px aliceblue;
+  border-radius: 0.5rem;
+}

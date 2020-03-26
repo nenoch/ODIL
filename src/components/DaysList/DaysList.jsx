@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import "../../App.css";
+import styles from "./DaysList.module.css";
 
-const DaysList = ({setDays, days, setDay, setIsEdit}) => {
+const DaysList = ({ setDays, days, setDay, setIsEdit }) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("http://localhost:8000/days", {
@@ -25,12 +27,17 @@ const DaysList = ({setDays, days, setDay, setIsEdit}) => {
   };
 
   return (
-    <div>
+    <div className={styles.DaysListContainer}>
       {days.map(day => (
         <div key={day._id}>
           <h4>{day.title}</h4>
-          <button onClick={() => deleteDay(day._id)}>Delete</button>
-          <button onClick={() => editDay(day)}>Update</button>
+          <p>{day.content}</p>
+          <button className="Button" onClick={() => deleteDay(day._id)}>
+            Delete
+          </button>
+          <button className="Button" onClick={() => editDay(day)}>
+            Update
+          </button>
         </div>
       ))}
     </div>
