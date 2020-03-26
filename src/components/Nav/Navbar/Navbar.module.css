@@ -1,0 +1,32 @@
+.Navbar {
+    width: 100%;
+    height: 3.2rem;
+    padding: 0 0.8rem;
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    background: rgb(4, 91, 167);
+    justify-content: space-between;
+    align-items: center;
+    z-index: 90;
+    box-sizing: border-box;
+}
+
+.Title {
+  font-family: 'Varela Round', sans-serif;
+}
+
+/* .Navbar nav {
+    height: 100%;
+}
+
+.Logo {
+    height: 80%;
+}
+
+@media (max-width: 499px) {
+    .DesktopOnly {
+        display: none;
+    }
+} */
