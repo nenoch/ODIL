@@ -1,64 +1,13 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import "../../App.css";
 import styles from "./DayForm.module.css";
 
 const DayForm = ({ isEdit, day, addDay }) => {
-  const [input, setInput] = useState({
-    title: "",
-    content: "",
-    author: ""
-  });
+  const [input, setInput] = useState(day);
 
-  // const addDay = async () => {
-  //   const { title, content, author } = day;
-  //   if (!isEdit) {
-  //     const res = await axios.post(
-  //       "http://localhost:8000/days",
-  //       {
-  //         title,
-  //         content,
-  //         author
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json"
-  //         }
-  //       }
-  //     );
-  //     setDays(days.concat(res.data));
-  //     setDay({
-  //       title: "",
-  //       content: "",
-  //       author: ""
-  //     });
-  //   } else {
-  //     const updatedRes = await axios.patch(
-  //       `http://localhost:8000/days/${day._id}`,
-  //       {
-  //         title,
-  //         content,
-  //         author
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json"
-  //         }
-  //       }
-  //     );
-  //     // Find old instance and replace with updated
-  //     const updatedDays = days.map(d =>
-  //       d._id === updatedRes.data._id ? updatedRes.data : d
-  //     );
-  //     setDays(updatedDays);
-  //     setIsEdit(false);
-  //     setDay({
-  //       title: "",
-  //       content: "",
-  //       author: ""
-  //     });
-  //   }
-  // };
+  useEffect(() => {
+    setInput(day);
+  }, [day]);
 
   const handleChangeField = (key, event) => {
     setInput({
@@ -67,7 +16,7 @@ const DayForm = ({ isEdit, day, addDay }) => {
     });
   };
 
-  const { title, content, author } = day;
+  const { title, content, author } = input;
 
   return (
     <div className={styles.FormContainer}>
@@ -89,7 +38,7 @@ const DayForm = ({ isEdit, day, addDay }) => {
         value={author}
         placeholder="Author"
       />
-      <button className="Button" onClick={addDay(input)}>
+      <button className="Button" onClick={() => addDay(input)}>
         {isEdit ? "Save" : "Submit"}
       </button>
     </div>

@@ -5,10 +5,7 @@ import DayForm from "../../components/DayForm/DayForm";
 import DaysList from "../../components/DaysList/DaysList";
 import styles from "./DaysPage.module.css";
 
-const DaysPage = ({ day, days, onLoad, onEdit }) => {
-
-  const [currentDays, setCurrentDays] = useState(days);
-
+const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("http://localhost:8000/days", {
@@ -19,11 +16,11 @@ const DaysPage = ({ day, days, onLoad, onEdit }) => {
       onLoad(res.data);
     };
     fetchData();
-  }, []);
+  }, [onLoad]);
 
   const handleDeleteDay = async id => {
     await axios.delete(`http://localhost:8000/days/${id}`);
-    setCurrentDays(days.filter(day => day._id !== id));
+    onDelete(id);
   };
 
   const handleEditDay = async day => {
@@ -31,7 +28,7 @@ const DaysPage = ({ day, days, onLoad, onEdit }) => {
     onEdit(day);
   };
 
-  const handleAddDay = async (input) => {
+  const handleAddDay = async input => {
     const { title, content, author } = input;
     if (!isEdit) {
       const res = await axios.post(
@@ -47,12 +44,7 @@ const DaysPage = ({ day, days, onLoad, onEdit }) => {
           }
         }
       );
-      setCurrentDays(days.concat(res.data));
-      // setDay({
-      //   title: "",
-      //   content: "",
-      //   author: ""
-      // });
+      onAdd(res.data);
     } else {
       const updatedRes = await axios.patch(
         `http://localhost:8000/days/${day._id}`,
@@ -67,28 +59,21 @@ const DaysPage = ({ day, days, onLoad, onEdit }) => {
           }
         }
       );
-      // Find old instance and replace with updated
-      const updatedDays = days.map(d =>
-        d._id === updatedRes.data._id ? updatedRes.data : d
-      );
-      setCurrentDays(updatedDays);
+      onUpdate(updatedRes.data);
       setIsEdit(false);
-      // setDay({
-      //   title: "",
-      //   content: "",
-      //   author: ""
-      // });
     }
+    onEdit({
+      title: "",
+      content: "",
+      author: ""
+    });
   };
 
   const [isEdit, setIsEdit] = useState();
 
   return (
     <div className={styles.Content}>
-      <DayForm
-        isEdit={isEdit}
-        addDay={handleAddDay}
-      />
+      <DayForm isEdit={isEdit} addDay={handleAddDay} day={day} />
       <DaysList
         deleteDay={handleDeleteDay}
         editDay={handleEditDay}
@@ -105,7 +90,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onLoad: data => dispatch({ type: "DAYS_LOADED", data }),
-  onEdit: data => dispatch({ type: "EDIT_DAY", data })
+  onEdit: data => dispatch({ type: "EDIT_DAY", data }),
+  onDelete: id => dispatch({ type: "DELETE_DAY", id }),
+  onAdd: data => dispatch({ type: "ADD_DAY", data }),
+  onUpdate: data => dispatch({ type: "UPDATE_DAYS", data })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DaysPage);
