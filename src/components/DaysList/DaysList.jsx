@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import { connect } from 'react-redux';
 import "../../App.css";
 import styles from "./DaysList.module.css";
 
-const DaysList = ({ setDays, days, setDay, setIsEdit }) => {
+const DaysList = ({ onLoad, setDays, days, setDay, setIsEdit }) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("http://localhost:8000/days", {
@@ -11,7 +12,7 @@ const DaysList = ({ setDays, days, setDay, setIsEdit }) => {
           "Content-Type": "application/json"
         }
       });
-      setDays(res.data);
+      onLoad(res.data);
     };
     fetchData();
   }, []);
@@ -44,4 +45,12 @@ const DaysList = ({ setDays, days, setDay, setIsEdit }) => {
   );
 };
 
-export default DaysList;
+const mapStateToProps = state => ({
+  days: state.days,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onLoad: data => dispatch({ type: 'DAYS_LOADED', data }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DaysList);

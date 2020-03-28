@@ -18,7 +18,6 @@ const MainPage = () => {
         isEdit={isEdit}
         setDays={setDays}
         setIsEdit={setIsEdit}
-        days={days}
         day={day}
         setDay={setDay}
       />
