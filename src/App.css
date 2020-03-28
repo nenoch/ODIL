@@ -9,6 +9,10 @@
   padding: 0.5rem;
 }
 
+.Button:focus {
+  outline: none;
+}
+
 .Button:hover {
   color: white;
   background: rgb(4, 91, 167);

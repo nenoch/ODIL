@@ -21,6 +21,11 @@ const DayForm = ({ isEdit, setDays, setIsEdit, days, day, setDay }) => {
         }
       );
       setDays(days.concat(res.data));
+      setDay({
+        title: "",
+        content: "",
+        author: ""
+      })
     } else {
       const updatedRes = await axios.patch(
         `http://localhost:8000/days/${day._id}`,
