@@ -1,31 +1,8 @@
-import React, { useEffect } from "react";
-import axios from "axios";
-import { connect } from 'react-redux';
+import React from "react";
 import "../../App.css";
 import styles from "./DaysList.module.css";
 
-const DaysList = ({ onLoad, setDays, days, setDay, setIsEdit }) => {
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get("http://localhost:8000/days", {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      onLoad(res.data);
-    };
-    fetchData();
-  }, []);
-
-  const deleteDay = async id => {
-    await axios.delete(`http://localhost:8000/days/${id}`);
-    setDays(days.filter(day => day._id !== id));
-  };
-
-  const editDay = async day => {
-    setIsEdit(true);
-    setDay(day);
-  };
+const DaysList = ({ deleteDay, days, editDay }) => {
 
   return (
     <div className={styles.DaysListContainer}>
@@ -45,12 +22,4 @@ const DaysList = ({ onLoad, setDays, days, setDay, setIsEdit }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  days: state.days,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onLoad: data => dispatch({ type: 'DAYS_LOADED', data }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DaysList);
+export default DaysList;
