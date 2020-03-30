@@ -6,6 +6,7 @@ import DaysList from "../../components/DaysList/DaysList";
 import styles from "./DaysPage.module.css";
 
 const env = process.env.NODE_ENV || 'development';
+console.log("env", process.env.NODE_ENV);
 const config = require(`../../config/${env}`);
 
 const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
