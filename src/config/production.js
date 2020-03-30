@@ -1,4 +1,4 @@
 module.exports = {
-    env: 'development',
+    env: 'production',
     apiUrl: 'https://odil-api.herokuapp.com'
 }

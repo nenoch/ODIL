@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(`../../config/${env}`);
 
 const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
-  console.log("env", process.env.NODE_ENV);
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`${config.apiUrl}/days`, {
