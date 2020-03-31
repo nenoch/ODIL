@@ -5,15 +5,13 @@ import DayForm from "../../components/DayForm/DayForm";
 import DaysList from "../../components/DaysList/DaysList";
 import styles from "./DaysPage.module.css";
 
-const env = process.env.NODE_ENV || 'development';
-console.log("env", process.env.NODE_ENV);
-const config = require(`../../config/${env}`);
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`${config.apiUrl}/days`, {
+      const res = await axios.get(`${apiUrl}/days`, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -24,7 +22,7 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
   }, [onLoad]);
 
   const handleDeleteDay = async id => {
-    await axios.delete(`${config.apiUrl}/days/${id}`);
+    await axios.delete(`${apiUrl}/days/${id}`);
     onDelete(id);
   };
 
@@ -37,7 +35,7 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
     const { title, content, author } = input;
     if (!isEdit) {
       const res = await axios.post(
-        `${config.apiUrl}/days`,
+        `${apiUrl}/days`,
         {
           title,
           content,
@@ -52,7 +50,7 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
       onAdd(res.data);
     } else {
       const updatedRes = await axios.patch(
-        `${config.apiUrl}/days/${day._id}`,
+        `${apiUrl}/days/${day._id}`,
         {
           title,
           content,
