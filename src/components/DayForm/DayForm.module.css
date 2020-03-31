@@ -14,7 +14,7 @@ textarea {
 
 .Field {
   background-color: aliceblue;
-  border: none;
+  border: solid 1px aliceblue;
   border-radius: 0.5rem;
   font-size: 1rem;
   padding: 1rem;
@@ -24,7 +24,6 @@ textarea {
 .Field:focus,
 .Field:hover {
   background-color: white;
-  border: solid 1px aliceblue;
   border-radius: 0.5rem;
   outline: none;
 }
