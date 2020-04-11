@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 import styles from "./AuthPage.module.css";
 
-const AuthPage = () => {
+const apiUrl = process.env.REACT_APP_API_URL;
 
+const AuthPage = () => {
+  const history = useHistory();
   const defaultUser = {
     username: "",
     password: "",
@@ -12,14 +15,34 @@ const AuthPage = () => {
   const [input, setInput] = useState(defaultUser);
 
   useEffect(() => {
-    setInput(defaultUser);
-  }, []);
+    setInput(input);
+  }, [input]);
 
   const handleChangeField = (key, event) => {
     setInput({
       ...input,
       [key]: event.target.value,
     });
+  };
+
+  const handleLogin = async (input) => {
+    const { username, password } = input;
+    const res = await axios.post(
+      `${apiUrl}/login`,
+      {
+        username,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    setInput(defaultUser);
+    console.log("res", res.data);
+    localStorage.setItem("auth-token", res.data.token);
+    history.push("/");
   };
 
   const { username, password } = input;
@@ -39,7 +62,7 @@ const AuthPage = () => {
           value={password}
           placeholder="Password"
         />
-        <button className="Button" onClick={() => alert(input)}>
+        <button className="Button" onClick={() => handleLogin(input)}>
           Login
         </button>
       </div>{" "}
