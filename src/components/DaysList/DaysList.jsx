@@ -2,13 +2,8 @@ import React from "react";
 import "../../App.css";
 import styles from "./DaysList.module.css";
 
-const DaysList = ({ deleteDay, days, editDay }) => {
-  const isAuthor = (day) => {
-    const token = localStorage.getItem("auth-token");
-    const parsedToken = JSON.parse(window.atob(token.split(".")[1]));
-    const loggedName = parsedToken.name;
-    return loggedName === day.author;
-  };
+const DaysList = ({ userName, deleteDay, days, editDay }) => {
+  const isAuthor = (day) => userName === day.author;
 
   return (
     <div className={styles.DaysListContainer}>

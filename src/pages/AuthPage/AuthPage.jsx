@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 import axios from "axios";
 import styles from "./AuthPage.module.css";
+import { parseAuthToken } from "../authUtils";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const AuthPage = () => {
+const AuthPage = ({onLogin}) => {
   const history = useHistory();
-  const defaultUser = {
+  const defaultInput = {
     username: "",
     password: "",
   };
 
-  const [input, setInput] = useState(defaultUser);
+  const [input, setInput] = useState(defaultInput);
 
   useEffect(() => {
     setInput(input);
@@ -39,9 +41,8 @@ const AuthPage = () => {
         },
       }
     );
-    setInput(defaultUser);
-    console.log("res", res.data);
     localStorage.setItem("auth-token", res.data.token);
+    onLogin(parseAuthToken());
     history.push("/");
   };
 
@@ -70,4 +71,8 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+const mapDispatchToProps = dispatch => ({
+  onLogin: data => dispatch({ type: "LOGIN", data }),
+});
+
+export default connect(null, mapDispatchToProps)(AuthPage);

@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import DayForm from "../../components/DayForm/DayForm";
 import DaysList from "../../components/DaysList/DaysList";
 import styles from "./DaysPage.module.css";
+import { parseAuthToken } from "../authUtils";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
+const DaysPage = ({ currentUser, day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +17,8 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
           "Content-Type": "application/json"
         }
       });
-      onLoad(res.data);
+      const userName = parseAuthToken();
+      onLoad({days: res.data, currentUser: userName });
     };
     fetchData();
   }, [onLoad]);
@@ -78,6 +80,7 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
     <div className={styles.Content}>
       <DayForm isEdit={isEdit} addDay={handleAddDay} day={day} />
       <DaysList
+        userName={currentUser.username}
         deleteDay={handleDeleteDay}
         editDay={handleEditDay}
         days={days}
@@ -88,11 +91,12 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
 
 const mapStateToProps = state => ({
   days: state.days,
-  day: state.currentDay
+  day: state.currentDay,
+  currentUser: state.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLoad: data => dispatch({ type: "DAYS_LOADED", data }),
+  onLoad: data => dispatch({ type: "LOADED", data }),
   onEdit: data => dispatch({ type: "EDIT_DAY", data }),
   onDelete: id => dispatch({ type: "DELETE_DAY", id }),
   onAdd: data => dispatch({ type: "ADD_DAY", data }),

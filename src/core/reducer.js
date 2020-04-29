@@ -5,15 +5,24 @@ export const reducer = (
       title: "",
       content: "",
       author: ""
+    },
+    currentUser: {
+      username: "",
     }
   },
   action
 ) => {
   switch (action.type) {
-    case "DAYS_LOADED":
+    case "LOGIN":
       return {
         ...state,
-        days: action.data
+        currentUser: action.data
+      };
+    case "LOADED":
+      return {
+        ...state,
+        days: action.data.days,
+        currentUser: action.data.currentUser
       };
     case "EDIT_DAY":
       return {
