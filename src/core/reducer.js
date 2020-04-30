@@ -11,13 +11,15 @@ export const defaultState = {
   currentUser: {
     username: "",
   },
+  isLogged: false
 };
 
 const reducers = {
   [ACTIONS.LOGIN]: (state, { payload: data }) => {
     return {
       ...state,
-      currentUser: data
+      currentUser: data,
+      isLogged: true
     };
   },
   [ACTIONS.LOADED]: (state, { payload: { days, currentUser } }) => {
@@ -25,6 +27,8 @@ const reducers = {
       ...state,
       days: days,
       currentUser: currentUser,
+      // TODO temp
+      isLogged: (currentUser.username === undefined)? false : true 
     };
   },
   [ACTIONS.ADD_DAY]: (state, { payload: data }) => {
@@ -54,45 +58,3 @@ const reducers = {
 };
 
 export default handleActions(reducers, defaultState);
-
-// export const reducer = (
-//   state = defaultState,
-//   action
-// ) => {
-//   switch (action.type) {
-//     case "LOGIN":
-//       return {
-//         ...state,
-//         currentUser: action.data
-//       };
-//     case "LOADED":
-//       return {
-//         ...state,
-//         days: action.data.days,
-//         currentUser: action.data.currentUser
-//       };
-//     case "EDIT_DAY":
-//       return {
-//         ...state,
-//         currentDay: action.data
-//       };
-//     case "DELETE_DAY":
-//       return {
-//         ...state,
-//         days: state.days.filter(day => day._id !== action.id)
-//       };
-//     case "ADD_DAY":
-//       return {
-//         ...state,
-//         days: state.days.concat(action.data)
-//       };
-//     case "UPDATE_DAYS":
-//       return {
-//         ...state,
-//         days: state.days.map(d => (d._id === action.data._id ? action.data : d))
-//       };
-
-//     default:
-//       return state;
-//   }
-// };
