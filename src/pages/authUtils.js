@@ -10,3 +10,8 @@ export const parseAuthToken = () => {
 export const checkAuthToken = () => {
   return localStorage.getItem("auth-token");
 };
+
+export const clearAuthToken = () => {
+  localStorage.removeItem("auth-token");
+  return;
+};

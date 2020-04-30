@@ -23,6 +23,12 @@ const reducers = {
       isLogged: true
     };
   },
+  [ACTIONS.LOGOUT]: (state) => {
+    return {
+      ...state,
+      isLogged: false
+    };
+  },
   [ACTIONS.LOADED]: (state, { payload: { days, currentUser } }) => {
     return {
       ...state,

@@ -12,7 +12,7 @@ function App() {
       <Container>
         <Navbar />
         <Route path='/' exact component={DaysPage} />
-        <Route path='/login' exact component={AuthPage} />
+        <Route path='/access' exact component={AuthPage} />
       </Container>
     </BrowserRouter>
   );

@@ -2,6 +2,7 @@ import { createAction } from "redux-actions";
 
 export const ACTIONS = {
     LOGIN: "[User] Login",
+    LOGOUT: "[User] Logout",
     LOADED: "[User/Day] Page data loaded",
     EDIT_DAY: "[Day] Edit Day",
     DELETE_DAY: "[Day] Delete Day",
@@ -20,6 +21,11 @@ const idPayloadCreator = (id) => {
 export const login = createAction(
     ACTIONS.LOGIN,
     dataPayloadCreator
+)
+
+export const logout = createAction(
+    ACTIONS.LOGOUT,
+    null
 )
 
 export const loaded = createAction(
