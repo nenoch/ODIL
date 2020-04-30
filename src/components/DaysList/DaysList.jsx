@@ -2,8 +2,8 @@ import React from "react";
 import "../../App.css";
 import styles from "./DaysList.module.css";
 
-const DaysList = ({ userName, deleteDay, days, editDay }) => {
-  const isAuthor = (day) => userName === day.author;
+const DaysList = ({ userId, deleteDay, days, editDay }) => {
+  const isAuthor = (day) => userId === day.author;
 
   return (
     <div className={styles.DaysListContainer}>

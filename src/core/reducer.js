@@ -10,6 +10,7 @@ export const defaultState = {
   },
   currentUser: {
     username: "",
+    userId: undefined
   },
   isLogged: false
 };

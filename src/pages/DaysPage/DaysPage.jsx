@@ -51,7 +51,7 @@ const DaysPage = ({
         {
           title,
           content,
-          author,
+          author: author || currentUser.userId,
         },
         {
           headers: {
@@ -95,7 +95,7 @@ const DaysPage = ({
         day={day}
       />
       <DaysList
-        userName={currentUser.username}
+        userId={currentUser.userId}
         deleteDay={handleDeleteDay}
         editDay={handleEditDay}
         days={days}
