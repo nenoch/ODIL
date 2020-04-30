@@ -5,6 +5,7 @@ import DayForm from "../../components/DayForm/DayForm";
 import DaysList from "../../components/DaysList/DaysList";
 import styles from "./DaysPage.module.css";
 import { parseAuthToken } from "../authUtils";
+import * as actions from "../../core/actions";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -96,11 +97,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLoad: data => dispatch({ type: "LOADED", data }),
-  onEdit: data => dispatch({ type: "EDIT_DAY", data }),
-  onDelete: id => dispatch({ type: "DELETE_DAY", id }),
-  onAdd: data => dispatch({ type: "ADD_DAY", data }),
-  onUpdate: data => dispatch({ type: "UPDATE_DAYS", data })
+  onLoad: data => dispatch(actions.loaded(data)),
+  onEdit: data => dispatch(actions.editDay(data)),
+  onDelete: id => dispatch(actions.deleteDay(id)),
+  onAdd: data => dispatch(actions.addDay(data)),
+  onUpdate: data => dispatch(actions.updateDays(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DaysPage);

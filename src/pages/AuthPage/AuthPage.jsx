@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import styles from "./AuthPage.module.css";
 import { parseAuthToken } from "../authUtils";
+import * as actions from "../../core/actions";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -72,7 +73,7 @@ const AuthPage = ({onLogin}) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: data => dispatch({ type: "LOGIN", data }),
+  onLogin: data => dispatch(actions.login(data)),
 });
 
 export default connect(null, mapDispatchToProps)(AuthPage);
