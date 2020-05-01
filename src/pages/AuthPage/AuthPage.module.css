@@ -1,0 +1,42 @@
+.Content {
+  margin-top: 4.8rem;
+}
+
+.FormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0;
+  min-height: 18rem;
+}
+
+.Field {
+  background-color: aliceblue;
+  border: solid 1px aliceblue;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.Field:focus,
+.Field:hover {
+  background-color: white;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+.Switch {
+  font-size: 1rem;
+  padding: 1rem;
+  margin: 1rem;
+  border: none;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.Switch:focus,
+.Switch:hover {
+  color:  rgb(4, 91, 167);
+  outline: none;
+}

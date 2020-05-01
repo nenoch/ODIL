@@ -4,34 +4,46 @@ import { connect } from "react-redux";
 import DayForm from "../../components/DayForm/DayForm";
 import DaysList from "../../components/DaysList/DaysList";
 import styles from "./DaysPage.module.css";
+import { parseAuthToken } from "../authUtils";
+import * as actions from "../../core/actions";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
-
+const DaysPage = ({
+  isLogged,
+  currentUser,
+  day,
+  days,
+  onLoad,
+  onEdit,
+  onAdd,
+  onDelete,
+  onUpdate,
+}) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`${apiUrl}/days`, {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
-      onLoad(res.data);
+      const userName = parseAuthToken();
+      onLoad({ days: res.data, currentUser: userName });
     };
     fetchData();
   }, [onLoad]);
 
-  const handleDeleteDay = async id => {
+  const handleDeleteDay = async (id) => {
     await axios.delete(`${apiUrl}/days/${id}`);
     onDelete(id);
   };
 
-  const handleEditDay = async day => {
+  const handleEditDay = async (day) => {
     setIsEdit(true);
     onEdit(day);
   };
 
-  const handleAddDay = async input => {
+  const handleAddDay = async (input) => {
     const { title, content, author } = input;
     if (!isEdit) {
       const res = await axios.post(
@@ -39,12 +51,12 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
         {
           title,
           content,
-          author
+          author: author || currentUser.userId,
         },
         {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
       onAdd(res.data);
@@ -54,12 +66,12 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
         {
           title,
           content,
-          author
+          author,
         },
         {
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
       onUpdate(updatedRes.data);
@@ -68,7 +80,7 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
     onEdit({
       title: "",
       content: "",
-      author: ""
+      author: "",
     });
   };
 
@@ -76,8 +88,14 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
 
   return (
     <div className={styles.Content}>
-      <DayForm isEdit={isEdit} addDay={handleAddDay} day={day} />
+      <DayForm
+        isLogged={isLogged}
+        isEdit={isEdit}
+        addDay={handleAddDay}
+        day={day}
+      />
       <DaysList
+        userId={currentUser.userId}
         deleteDay={handleDeleteDay}
         editDay={handleEditDay}
         days={days}
@@ -86,17 +104,19 @@ const DaysPage = ({ day, days, onLoad, onEdit, onAdd, onDelete, onUpdate }) => {
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   days: state.days,
-  day: state.currentDay
+  day: state.currentDay,
+  currentUser: state.currentUser,
+  isLogged: state.isLogged,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onLoad: data => dispatch({ type: "DAYS_LOADED", data }),
-  onEdit: data => dispatch({ type: "EDIT_DAY", data }),
-  onDelete: id => dispatch({ type: "DELETE_DAY", id }),
-  onAdd: data => dispatch({ type: "ADD_DAY", data }),
-  onUpdate: data => dispatch({ type: "UPDATE_DAYS", data })
+const mapDispatchToProps = (dispatch) => ({
+  onLoad: (data) => dispatch(actions.loaded(data)),
+  onEdit: (data) => dispatch(actions.editDay(data)),
+  onDelete: (id) => dispatch(actions.deleteDay(id)),
+  onAdd: (data) => dispatch(actions.addDay(data)),
+  onUpdate: (data) => dispatch(actions.updateDays(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DaysPage);

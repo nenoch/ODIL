@@ -1,43 +1,67 @@
-export const reducer = (
-  state = {
-    days: [],
-    currentDay: {
-      title: "",
-      content: "",
-      author: ""
-    }
-  },
-  action
-) => {
-  switch (action.type) {
-    case "DAYS_LOADED":
-      return {
-        ...state,
-        days: action.data
-      };
-    case "EDIT_DAY":
-      return {
-        ...state,
-        currentDay: action.data
-      };
-    case "DELETE_DAY":
-      return {
-        ...state,
-        days: state.days.filter(day => day._id !== action.id)
-      };
-    case "ADD_DAY":
-      return {
-        ...state,
-        days: state.days.concat(action.data)
-      };
-    case "UPDATE_DAYS":
-      console.log("action.data", action.data);
-      return {
-        ...state,
-        days: state.days.map(d => (d._id === action.data._id ? action.data : d))
-      };
+import { handleActions } from "redux-actions";
+import { ACTIONS } from "./actions";
 
-    default:
-      return state;
-  }
+export const defaultState = {
+  days: [],
+  currentDay: {
+    title: "",
+    content: "",
+    author: "",
+  },
+  currentUser: {
+    username: "",
+    userId: undefined
+  },
+  isLogged: false
 };
+
+const reducers = {
+  [ACTIONS.LOGIN]: (state, { payload: data }) => {
+    return {
+      ...state,
+      currentUser: data,
+      isLogged: true
+    };
+  },
+  [ACTIONS.LOGOUT]: (state) => {
+    return {
+      ...state,
+      isLogged: false
+    };
+  },
+  [ACTIONS.LOADED]: (state, { payload: { days, currentUser } }) => {
+    return {
+      ...state,
+      days: days,
+      currentUser: currentUser,
+      // TODO temp
+      isLogged: (currentUser.username === undefined)? false : true 
+    };
+  },
+  [ACTIONS.ADD_DAY]: (state, { payload: data }) => {
+    return {
+      ...state,
+      days: state.days.concat(data)
+    };
+  },
+  [ACTIONS.EDIT_DAY]: (state, { payload: data }) => {
+    return {
+      ...state,
+      currentDay: data
+    };
+  },
+  [ACTIONS.DELETE_DAY]: (state, { payload: id }) => {
+    return {
+      ...state,
+      days: state.days.filter(day => day._id !== id)
+    };
+  },
+  [ACTIONS.UPDATE_DAYS]: (state, { payload: data }) => {
+    return {
+      ...state,
+      days: state.days.map(d => (d._id === data._id ? data : d))
+    };
+  },
+};
+
+export default handleActions(reducers, defaultState);
