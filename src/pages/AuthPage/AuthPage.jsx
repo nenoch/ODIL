@@ -8,7 +8,7 @@ import * as actions from "../../core/actions";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const AuthPage = ({onLogin}) => {
+const AuthPage = ({ onLogin }) => {
   const history = useHistory();
   const defaultInput = {
     username: "",
@@ -16,6 +16,7 @@ const AuthPage = ({onLogin}) => {
   };
 
   const [input, setInput] = useState(defaultInput);
+  const [isSignup, setIsSignup] = useState(false);
 
   useEffect(() => {
     setInput(input);
@@ -28,10 +29,11 @@ const AuthPage = ({onLogin}) => {
     });
   };
 
-  const handleLogin = async (input) => {
+  const handleAuth = async (input) => {
     const { username, password } = input;
+    const urlPath = isSignup ? "login": "users";
     const res = await axios.post(
-      `${apiUrl}/login`,
+      `${apiUrl}/${urlPath}`,
       {
         username,
         password,
@@ -45,6 +47,10 @@ const AuthPage = ({onLogin}) => {
     localStorage.setItem("auth-token", res.data.token);
     onLogin(parseAuthToken());
     history.push("/");
+  };
+
+  const handleSignup = () => {
+    setIsSignup(!isSignup);
   };
 
   const { username, password } = input;
@@ -64,16 +70,17 @@ const AuthPage = ({onLogin}) => {
           value={password}
           placeholder="Password"
         />
-        <button className="Button" onClick={() => handleLogin(input)}>
-          Login
+        <button className="Button" onClick={() => handleAuth(input)}>
+          {isSignup ? "Login" : "Sign up"}
         </button>
+        <button className={styles.Switch} onClick={() => handleSignup()}>switch to {isSignup ? "Sign up": "Login"}</button>
       </div>{" "}
     </div>
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  onLogin: data => dispatch(actions.login(data)),
+const mapDispatchToProps = (dispatch) => ({
+  onLogin: (data) => dispatch(actions.login(data)),
 });
 
 export default connect(null, mapDispatchToProps)(AuthPage);

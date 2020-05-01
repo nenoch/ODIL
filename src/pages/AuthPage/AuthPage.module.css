@@ -25,3 +25,18 @@
   border-radius: 0.5rem;
   outline: none;
 }
+
+.Switch {
+  font-size: 1rem;
+  padding: 1rem;
+  margin: 1rem;
+  border: none;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.Switch:focus,
+.Switch:hover {
+  color:  rgb(4, 91, 167);
+  outline: none;
+}
