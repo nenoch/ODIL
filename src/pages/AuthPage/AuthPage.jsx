@@ -31,7 +31,7 @@ const AuthPage = ({ onLogin }) => {
 
   const handleAuth = async (input) => {
     const { username, password } = input;
-    const urlPath = isSignup ? "login": "users";
+    const urlPath = isSignup ? "users": "login";
     const res = await axios.post(
       `${apiUrl}/${urlPath}`,
       {
@@ -71,9 +71,9 @@ const AuthPage = ({ onLogin }) => {
           placeholder="Password"
         />
         <button className="Button" onClick={() => handleAuth(input)}>
-          {isSignup ? "Login" : "Sign up"}
+          {isSignup ? "Sign up": "Login"}
         </button>
-        <button className={styles.Switch} onClick={() => handleSignup()}>switch to {isSignup ? "Sign up": "Login"}</button>
+        <button className={styles.Switch} onClick={() => handleSignup()}>switch to {isSignup ? "LOGIN": "SIGN UP"}</button>
       </div>{" "}
     </div>
   );

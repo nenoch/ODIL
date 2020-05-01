@@ -37,7 +37,7 @@ const DayForm = ({ isLogged, isEdit, day, addDay }) => {
           className={styles.Field}
           onChange={(e) => handleChangeField("author", e)}
           value={author}
-          placeholder="Author"
+          placeholder="Anon Author"
         />
       )}
       <button className="Button" onClick={() => addDay(input)}>
